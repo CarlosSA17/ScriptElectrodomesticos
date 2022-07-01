@@ -1,0 +1,143 @@
+-- Creamos la Base de Datos
+CREATE DATABASE dbElectrodomesticos;
+
+-- Ponemos en uso la Base de Datos
+USE dbElectrodomesticos;
+
+-- Creamos la tabla CLIENTE
+CREATE TABLE CLIENTE
+(CODCLI		char(5) PRIMARY KEY NOT NULL,
+NOMCLI		varchar(60) NOT NULL,
+APECLI		varchar(80) NOT NULL,
+EMACLI		varchar(80) NOT NULL,
+CELCLI		char(9) NULL,
+DIRCLI		varchar(70) NOT NULL,
+ESTCLI		char(1) NOT NULL,
+)
+
+-- Creamos la tabla VENDEDOR
+CREATE TABLE VENDEDOR 
+(CODVEND	char(5) PRIMARY KEY NOT NULL,
+NOMVEND		varchar(60) NOT NULL,
+APEVEND		varchar(80) NOT NULL,
+EMAVEND		varchar(80) NOT NULL,
+CELVEND		char(9) NOT NULL,
+DIRVEND		varchar(70) NOT NULL,
+ESTVEND		char(1) NOT NULL,
+)
+
+-- Creamos la tabla PRODUCTO
+CREATE TABLE PRODUCTO
+(CODPRO char(5) PRIMARY KEY NOT NULL,
+DESCPRO varchar(80) NOT NULL,
+CATPRO char(1) NOT NULL,
+PREPRO decimal(8,2) NOT NULL,
+STOCKPRO int NOT NULL,
+ESTPRO char(1) NOT NULL,
+)
+
+-- Creamos la tabla PROVEEDOR
+CREATE TABLE PROVEEDOR
+(CODPROV char(5) PRIMARY KEY NOT NULL,
+RAZSOCPROV varchar(90) NOT NULL,
+RUCPROV varchar(11) NOT NULL,
+EMAPROV varchar(70) NOT NULL,
+ESTPROV char(1) NOT NULL,
+)
+
+-- Creamos la tabla VENTA
+CREATE TABLE VENTA
+(CODVEN char(5) PRIMARY KEY NOT NULL,
+FECVEN date NOT NULL,
+CODCLI char(5) NOT NULL,
+CODVEND char(5) NOT NULL,
+ESTVEN char(1) NOT NULL,
+)
+
+-- Creamos la tabla VENTADETALLE
+CREATE TABLE VENTADETALLE
+(IDVENDET int PRIMARY KEY IDENTITY(1,1) NOT NULL,
+CODVEN char(5) NOT NULL,
+CODPRO char(5) NOT NULL,
+CANTPRO int NOT NULL,
+)
+
+-- Creamos la tabla COMPRA
+CREATE TABLE COMPRA
+(CODCOM char(5) PRIMARY KEY NOT NULL,
+FECCOM date NOT NULL,
+CODVEND char(5) NOT NULL,
+CODPROV char(5) NOT NULL,
+ESTCOM char(1) NOT NULL,
+)
+
+-- Creamos la tabla COMPRADETALLE
+CREATE TABLE COMPRADETALLE
+(IDCOMDET int PRIMARY KEY IDENTITY(1,1) NOT NULL,
+CODCOM char(5) NOT NULL,
+CODPRO char(5) NOT NULL,
+CANTPRO int NOT NULL,
+)
+
+-- Creamos la relacón entre VENTA-VENDEDOR
+ALTER TABLE VENTA ADD CONSTRAINT VENTA_VENDEDOR
+FOREIGN KEY (CODVEND)
+REFERENCES VENDEDOR (CODVEND);
+
+-- Creamos la relación entre VENTA-CLIENTE
+ALTER TABLE VENTA ADD CONSTRAINT VENTA_CLIENTE
+FOREIGN KEY (CODCLI)
+REFERENCES CLIENTE (CODCLI);
+
+-- Creamos la relación entre VENTADETALLE-VENTA
+ALTER TABLE VENTADETALLE ADD CONSTRAINT VENTADETALLE_VENTA
+FOREIGN KEY (CODVEN)
+REFERENCES VENTA (CODVEN);
+
+-- Creamos la relación entre VENTADETALLE-PRODUCTO
+ALTER TABLE VENTADETALLE ADD CONSTRAINT VENTADETALLE_PRODUCTO
+FOREIGN KEY (CODPRO)
+REFERENCES PRODUCTO (CODPRO);
+
+-- Creamos la relación entre COMPRA-VENDEDOR
+ALTER TABLE COMPRA ADD CONSTRAINT COMPRA_VENDEDOR
+FOREIGN KEY (CODVEND)
+REFERENCES VENDEDOR (CODVEND);
+
+-- Creamos la relación ente COMPRA-PROVEEDOR
+ALTER TABLE COMPRA ADD CONSTRAINT COMPRA_PROVEEDOR
+FOREIGN KEY (CODPROV)
+REFERENCES PROVEEDOR (CODPROV);
+
+-- Creamos la relación entre COMPRADETALLE-COMPRA
+ALTER TABLE COMPRADETALLE ADD CONSTRAINT COMPRADETALLE_COMPRA
+FOREIGN KEY (CODCOM)
+REFERENCES COMPRA (CODCOM);
+
+-- Creamos la relación enter COMPRADETALLE-PRODUCTO
+ALTER TABLE COMPRADETALLE ADD CONSTRAINT COMPRADETALLE_PRODUCTO
+FOREIGN KEY (CODPRO)
+REFERENCES PRODUCTO (CODPRO);
+
+-- Insertamos registros en la tabla CLIENTE
+INSERT INTO CLIENTE(CODCLI,NOMCLI,APECLI,EMACLI,CELCLI,DIRCLI,ESTCLI)
+VALUES ('CL001', 'Juana', 'Campos Ortíz', 'juana.campos@gmail.com', '987485152', 'Av.Miraflores', 'A'),
+	   ('CL002', 'Sofía', 'Barrios Salcedo', 'sofia.barrios@gmail.com', '', 'Jr. Huallaga', 'A'),
+	   ('CL003', 'Claudio', 'Pérez Luna', 'claudio.perez@outlook.com', '984512147', 'Av. Libertadores', 'A'),
+	   ('CL004', 'Marcos', 'Ávila Manco', 'marcos.avila@outlook.com', '', 'Calle Huallaga', 'A'),
+	   ('CL005', 'Anastasio', 'Salomon Inti', 'anastasio.salomon@gmail.com', '', 'Jr.Palomares', 'A')
+GO
+
+-- Insertamos registros en la tabla VENDEDOR
+INSERT INTO VENDEDOR (CODVEND,NOMVEND,APEVEND,EMAVEND,CELVEND,DIRVEND,ESTVEND)
+VALUES ('VEND1', 'Glora', 'Carrizales Paredes', 'gloria.carrizales@gmail.com', '984574123', 'Calle Las Begonias', 'A'),
+	   ('VEND2', 'Gabriel', 'Lozada Lombarti', 'gabriel.lozada@gmail.com', '974512368', 'Av. Los Girasoles', 'A'),
+	   ('VEND3', 'Gilberto', 'Martínez Guerra', 'gilberto.martinez@gmail.com', '921458425', 'Jr. Palomares', 'A')
+GO
+
+-- Insertamos registros en la tabla PROVEEDOR
+INSERT INTO PROVEEDOR (CODPROV,RAZSOCPROV,RUCPROV,EMAPROV,ESTPROV)
+VALUES ('PRV01', 'LG Corporation', '8754213651', 'informes@lg.com.pe', '984574123', 'Calle Las Begonias', 'A'),
+	   ('PRV02', 'SONY', '45213698741', 'informes@sony.com.pe', '974512368', 'Av. Los Girasoles', 'A'),
+	   ('PRV03', 'SAMSUNG', '85321697661', 'gilberto.martinez@gmail.com', '921458425', 'Jr. Palomares', 'A')
+GO
