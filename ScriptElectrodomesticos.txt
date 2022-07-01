@@ -119,6 +119,31 @@ ALTER TABLE COMPRADETALLE ADD CONSTRAINT COMPRADETALLE_PRODUCTO
 FOREIGN KEY (CODPRO)
 REFERENCES PRODUCTO (CODPRO);
 
+-- Creamos el PROCEDURE para registrar Datos
+SELECT * FROM CLIENTE
+GO
+CREATE PROCEDURE spInserCliente
+(
+  @CODCLI char(5),
+  @NOMCLI varchar(60),
+  @APECLI varchar(80),
+  @EMACLI varchar(80),
+  @CELCLI char(9),
+  @DIRCLI varchar(70),
+  @ESTCLI char(1)
+  )
+ AS 
+ BEGIN 
+SET NOCOUNT ON 
+INSERT INTO  CLIENTE 
+(CODCLI,NOMCLI,APECLI,EMACLI,CELCLI,DIRCLI,ESTCLI)
+VALUES 
+(@CODCLI, @NOMCLI, @APECLI, @EMACLI, @CELCLI, @DIRCLI, @ESTCLI)
+SELECT * FROM CLIENTE
+WHERE CODCLI = @CODCLI
+END 
+GO 
+
 -- Insertamos registros en la tabla CLIENTE
 INSERT INTO CLIENTE(CODCLI,NOMCLI,APECLI,EMACLI,CELCLI,DIRCLI,ESTCLI)
 VALUES ('CL001', 'Juana', 'Campos Ortíz', 'juana.campos@gmail.com', '987485152', 'Av.Miraflores', 'A'),
@@ -137,7 +162,18 @@ GO
 
 -- Insertamos registros en la tabla PROVEEDOR
 INSERT INTO PROVEEDOR (CODPROV,RAZSOCPROV,RUCPROV,EMAPROV,ESTPROV)
-VALUES ('PRV01', 'LG Corporation', '8754213651', 'informes@lg.com.pe', '984574123', 'Calle Las Begonias', 'A'),
-	   ('PRV02', 'SONY', '45213698741', 'informes@sony.com.pe', '974512368', 'Av. Los Girasoles', 'A'),
-	   ('PRV03', 'SAMSUNG', '85321697661', 'gilberto.martinez@gmail.com', '921458425', 'Jr. Palomares', 'A')
+VALUES ('PRV01', 'LG Corporation', '8754213651', 'informes@lg.com.pe', 'A'),
+	   ('PRV02', 'SONY', '45213698741', 'informes@sony.com.pe', 'A'),
+	   ('PRV03', 'SAMSUNG', '85321697661', 'informes@samsung.com.pe', 'A'),
+	   ('PRV04', 'OSTER SRL', '55663214478', 'informes@oster.com.pe', 'A'),
+	   ('PRV05', 'ASUS', '99663325478', 'informes@asus.com.pe', 'A')
+GO
+
+-- Insertamos registros en la tabla PRODUCTO
+INSERT INTO PRODUCTO (CODPRO, DESCPRO, CATPRO, PREPRO, STOCKPRO, ESTPRO)
+VALUES ('PRO01', 'Refrigeradora LG Side By Side', '8754213651', 'informes@lg.com.pe', 'A'),
+	   ('PRO02', 'Refrigeradora SBS 602L', '45213698741', 'informes@sony.com.pe', 'A'),
+	   ('PRO03', 'Refrigeradora Top Mount 500 L', '85321697661', 'informes@samsung.com.pe', 'A'),
+	   ('PRO04', 'TV Samsung UHD 55"', '55663214478', 'informes@oster.com.pe', 'A'),
+	   ('PRO05', 'Televisor 65" LG UHD 55', '99663325478', 'informes@asus.com.pe', 'A')
 GO
